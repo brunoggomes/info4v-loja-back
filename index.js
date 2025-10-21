@@ -12,21 +12,36 @@ const produtos = [
  * @param req objeto com os dados da requisição HTTP
  * @param res objeto para tratar a resposta HTTP
 */
-app.get('/', (req, res) => {
-  res.json({})
-})
+app.get('/', (req, res) => { res.redirect('/produtos') })
 /** Devolve a lista de todos os produtos */
-app.get('/produtos', (req, res) => {
-    res.json(produtos)
-})
+app.get('/produtos', (req, res) => { res.json(produtos) })
 /** Devolve um produto específico pelo seu id */
 app.get('/produtos/:id', (req, res) => {
     const id = +req.params.id
     if (req.params.id && id >= 0) {
         const prod = produtos.find(p => p.id === id)
-        if (prod) { res.json(prod) }
+        if (prod) { 
+          res.json(prod) 
+        } else { 
+          res.json({}) 
+        }
+    } else {
+      res.json({})
     }
-    res.json({})
+})
+//Obter o preço de um produto dado o seu id
+app.get('/produtos/:id/preco', (req, res) => {
+  const id = +req.params.id
+    if (req.params.id && id >= 0) {
+        const prod = produtos.find(p => p.id === id)
+        if (prod) { 
+          res.json(prod.preco) 
+        } else { 
+          res.json({}) 
+        }
+    } else {
+      res.json({})
+    }
 })
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
